@@ -1,0 +1,29 @@
+描述：如下为类型为CMyString的声明，为该类型添加赋值运算符函数
+class CMyString
+{
+public:
+    CMyString(char* pData=nullptr);
+    CMyString(const CMyString& str);
+    ~CMyString(void);
+private:
+    char* m_pData;
+}
+
+1、返回值类型为该类型的引用、函数结束前返回自身引用
+2、将传入参数类型声明为引用、同时加上const
+3、释放内存（delete），防止内存泄漏
+
+解：
+CMyString& CMyString::operatoe=(const CMyString &str)
+{
+    if(this==&str)
+    {
+        return *this;
+    }
+    delete [] m_pData;
+    m_pData=nullptr;//释放内存、并指向空
+    m_pData=new char[strlen(str.m_pData)+1];
+    strcpy(m_pData,str.m_pData);
+    return *this;
+    
+}
